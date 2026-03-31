@@ -1,20 +1,24 @@
 # 🐧 PenguinSpace – Project Proposal
 
-## Overview
+---
 
-**PenguinSpace** là một desktop application giúp developer **thu hồi (reclaim), tối ưu và giảm dung lượng ổ đĩa** bị chiếm bởi **WSL distros và Docker storage** trên Windows.
+# Overview
 
-Khác với các tool monitor disk thông thường, PenguinSpace tập trung vào việc:
+**PenguinSpace** là một desktop application và automation tool giúp developer **thu hồi (reclaim), tối ưu và quản lý dung lượng ổ đĩa** bị chiếm bởi **WSL distros và Docker storage** trên Windows.
+
+Khác với các tool monitor disk thông thường, PenguinSpace tập trung vào việc **reclaim disk space nhanh nhất có thể** bằng các phương pháp hiệu quả như:
 
 * Reset distro
 * Repack distro
 * Cleanup Docker storage
 * Compact VHDX
-* Thu hồi dung lượng ổ đĩa nhanh nhất có thể
+* Storage analysis
+* Automation qua CLI
+* Điều khiển qua AI (MCP)
 
 Mục tiêu của PenguinSpace:
 
-> Giúp developer reclaim disk space bị WSL và Docker “ăn mất” trên Windows.
+> Giúp developer reclaim disk space bị WSL và Docker “ăn mất” trên Windows một cách nhanh chóng, an toàn và tự động hóa.
 
 ---
 
@@ -30,8 +34,9 @@ Rất nhiều developer trên Windows sử dụng:
 * Database containers
 * Build artifacts
 * Package cache
+* Dev environments
 
-Sau một thời gian, ổ C bị đầy nhưng **không biết lý do và không biết dọn như thế nào**.
+Sau một thời gian, ổ C bị đầy nhưng **không biết nguyên nhân và không biết dọn như thế nào**.
 
 ---
 
@@ -41,7 +46,7 @@ Sau một thời gian, ổ C bị đầy nhưng **không biết lý do và khôn
 
 WSL lưu toàn bộ filesystem trong file:
 
-```text
+```
 ext4.vhdx
 ```
 
@@ -52,13 +57,13 @@ Khi xoá file trong Linux:
 
 Muốn shrink phải dùng:
 
-```bash
+```
 wsl --shutdown
 diskpart
 compact vdisk
 ```
 
-→ Rất thủ công, nhiều developer không biết.
+→ Quy trình thủ công, nhiều developer không biết.
 
 ---
 
@@ -66,7 +71,7 @@ compact vdisk
 
 Docker images, layers, volumes nằm trong:
 
-```text
+```
 docker-desktop-data ext4.vhdx
 ```
 
@@ -80,7 +85,7 @@ Nhưng Docker Desktop không có disk usage manager rõ ràng.
 
 ---
 
-### 3. Cách giảm dung lượng hiệu quả nhất rất thủ công
+### 3. Cách reclaim disk space hiệu quả rất thủ công
 
 Các cách reclaim disk space thực tế:
 
@@ -102,7 +107,7 @@ Nhưng các bước này:
 
 ---
 
-### 4. Developer thường không biết distro nào đang chiếm dung lượng
+### 4. Developer không biết distro nào đang chiếm dung lượng
 
 Có thể có nhiều distro:
 
@@ -133,9 +138,7 @@ Hiện tại:
 
 # Proposed Solution – PenguinSpace
 
-## PenguinSpace sẽ giải quyết vấn đề bằng cách:
-
-Cung cấp một desktop app để developer có thể:
+PenguinSpace sẽ cung cấp một tool giúp developer:
 
 * Xem distro nào đang chiếm dung lượng
 * Reset distro
@@ -143,23 +146,25 @@ Cung cấp một desktop app để developer có thể:
 * Cleanup Docker storage
 * Compact VHDX
 * Shutdown WSL
-* Thu hồi dung lượng ổ đĩa chỉ bằng vài nút bấm
+* Thu hồi dung lượng ổ đĩa chỉ bằng vài nút bấm hoặc CLI command
+* Cho phép AI agent điều khiển qua MCP
 
 ### PenguinSpace không phải:
 
 * WSL manager
 * Docker manager
 * Disk viewer
+* System monitor
 
 ### PenguinSpace là:
 
-> Tool để reclaim disk space từ WSL và Docker trên Windows.
+> Tool để reclaim disk space từ WSL và Docker trên Windows, có thể điều khiển qua Desktop UI, CLI hoặc AI agent.
 
 ---
 
 # Core Features (v1)
 
-## PenguinSpace v1 sẽ tập trung vào reclaim disk space
+## PenguinSpace v1 tập trung vào reclaim disk space
 
 | Feature             | Mô tả                                        |
 | ------------------- | -------------------------------------------- |
@@ -197,23 +202,26 @@ Chỉ cần sử dụng:
 * File system access
 * Diskpart compact vdisk
 * Desktop UI
+* CLI interface
+* MCP server
 
 ## Các command PenguinSpace sẽ sử dụng
 
-| Action         | Command                              |
-| -------------- | ------------------------------------ |
-| List distro    | `wsl -l -v`                          |
-| Shutdown WSL   | `wsl --shutdown`                     |
-| Reset distro   | `wsl --unregister` + `wsl --install` |
-| Export distro  | `wsl --export`                       |
-| Import distro  | `wsl --import`                       |
-| Docker cleanup | `docker system prune -a`             |
-| Compact vhdx   | `diskpart compact vdisk`             |
-| Get size       | File system                          |
+| Action         | Command                  |
+| -------------- | ------------------------ |
+| List distro    | `wsl -l -v`              |
+| Shutdown WSL   | `wsl --shutdown`         |
+| Reset distro   | `wsl --unregister`       |
+| Export distro  | `wsl --export`           |
+| Import distro  | `wsl --import`           |
+| Docker cleanup | `docker system prune -a` |
+| Compact vhdx   | `diskpart compact vdisk` |
+| Get size       | File system              |
+| Open folder    | explorer.exe             |
 
 PenguinSpace thực chất là:
 
-> UI + automation tool cho các WSL và Docker disk operations.
+> Automation tool + UI + CLI wrapper cho các WSL và Docker disk operations.
 
 ---
 
@@ -221,46 +229,98 @@ PenguinSpace thực chất là:
 
 ## High-level architecture
 
-```text
-PenguinSpace Desktop App
- ├── UI Layer
- ├── WSL Service
- ├── Docker Service
- ├── Disk Service
- ├── Distro Service
- ├── Command Runner
- └── File System Analyzer
+```
+                    +-------------------+
+                    |   Desktop UI      |
+                    |    (Avalonia)     |
+                    +---------+---------+
+                              |
+                    +---------v---------+
+                    | PenguinSpace Core |
+                    +---------+---------+
+                              |
+        +-----------+---------+----------+
+        |           |                    |
+   WSL Service   Docker Service     Disk Service
+        |           |                    |
+        +-----------+---------+----------+
+                              |
+                        Command Runner
+                              |
+                              OS
+
+                    +-------------------+
+                    | PenguinSpace CLI  |
+                    +-------------------+
+
+                    +-------------------+
+                    | PenguinSpace MCP  |
+                    |     Server        |
+                    +-------------------+
 ```
 
-### Modules
+---
 
-| Module           | Responsibility        |
-| ---------------- | --------------------- |
-| WSL Service      | list distro, shutdown |
-| Distro Service   | reset, export, import |
-| Disk Service     | compact vhdx          |
-| Docker Service   | prune images/volumes  |
-| Storage Analyzer | disk usage            |
-| Command Runner   | run CLI commands      |
-| UI               | display dashboard     |
+# Modules
+
+| Module           | Responsibility         |
+| ---------------- | ---------------------- |
+| WSL Service      | list distro, shutdown  |
+| Distro Service   | reset, export, import  |
+| Disk Service     | compact vhdx           |
+| Docker Service   | prune images/volumes   |
+| Storage Analyzer | disk usage             |
+| Command Runner   | run CLI commands       |
+| CLI              | command line interface |
+| MCP              | MCP server             |
+| UI               | desktop UI             |
+| Logging          | logs                   |
+| Backup Service   | export/import distro   |
 
 ---
 
 # Suggested Tech Stack
 
-## Desktop App
+## Desktop App & Core
 
-| Option          | Tech                |
-| --------------- | ------------------- |
-| .NET            | WPF / WinUI         |
-| Electron        | React + Node        |
-| Tauri           | Rust + Frontend     |
-| Avalonia        | Cross-platform .NET |
-| Flutter Desktop | Dart                |
+| Layer     | Tech                          |
+| --------- | ----------------------------- |
+| Language  | C#                            |
+| Framework | .NET                          |
+| UI        | Avalonia                      |
+| Pattern   | MVVM                          |
+| Logging   | Serilog                       |
+| Charts    | LiveCharts                    |
+| Build     | dotnet CLI                    |
+| Publish   | Self-contained exe            |
+| CLI       | System.CommandLine            |
+| MCP       | MCP server (JSON RPC / stdio) |
 
-Nếu sử dụng .NET ecosystem:
+Avalonia được chọn vì:
 
-> WPF / WinUI là lựa chọn phù hợp cho PenguinSpace.
+* Dev bằng VSCode
+* Build bằng CLI
+* Self-contained publish
+* Không cần MSIX
+* Không cần Windows App SDK
+* Phù hợp AI-driven development
+
+---
+
+# Solution Structure
+
+```
+PenguinSpace.sln
+ ├── PenguinSpace.Core
+ ├── PenguinSpace.Application
+ ├── PenguinSpace.Infrastructure
+ ├── PenguinSpace.WSL
+ ├── PenguinSpace.Docker
+ ├── PenguinSpace.Disk
+ ├── PenguinSpace.CLI
+ ├── PenguinSpace.MCP
+ └── PenguinSpace.UI
+```
 
 ---
 
@@ -292,7 +352,25 @@ Nếu sử dụng .NET ecosystem:
 * Move distro to another drive
 * Schedule backup
 
-## Version 4 – Dev Environment Storage Manager
+## Version 4 – CLI Tool
+
+```
+penguinspace list
+penguinspace reset Ubuntu
+penguinspace repack Ubuntu
+penguinspace docker-clean
+penguinspace compact
+```
+
+## Version 5 – MCP Integration
+
+* MCP server
+* Expose tools
+* AI automation
+* Storage cleanup automation
+* Dev environment automation
+
+## Version 6 – Dev Environment Storage Manager
 
 * Manage VM disks
 * Manage container storage
@@ -302,34 +380,69 @@ Nếu sử dụng .NET ecosystem:
 
 ---
 
+# MCP Integration
+
+PenguinSpace sẽ expose MCP tools để AI agent có thể thao tác với WSL và Docker storage.
+
+### MCP Tools
+
+| Tool             | Description        |
+| ---------------- | ------------------ |
+| list_wsl_distros | List WSL distros   |
+| get_distro_size  | Get disk usage     |
+| reset_distro     | Reset distro       |
+| repack_distro    | Repack distro      |
+| docker_prune     | Cleanup docker     |
+| compact_vhdx     | Compact disk       |
+| shutdown_wsl     | Shutdown WSL       |
+| export_distro    | Backup distro      |
+| import_distro    | Restore distro     |
+| analyze_storage  | Analyze disk usage |
+
+PenguinSpace có thể trở thành **system maintenance tool cho AI agents**.
+
+---
+
 # Long-term Vision
 
 PenguinSpace có thể evolve thành:
 
-```text
-Dev Storage Manager
+```
+Developer Environment Storage Manager
  ├── WSL
  ├── Docker
  ├── VM disks
  ├── Dev caches
  ├── Package caches
  ├── Build artifacts
- └── Local development storage management
+ ├── Storage history
+ ├── Backup
+ └── AI-controlled maintenance (MCP)
 ```
 
 Mục tiêu dài hạn:
 
-> PenguinSpace becomes the storage manager for developer environments on Windows.
+> PenguinSpace becomes the storage manager and maintenance tool for developer environments, accessible via Desktop UI, CLI, and AI agents.
+
+---
 
 # Summary
 
 ## PenguinSpace solves:
 
-| Problem                    | Solution              |
-| -------------------------- | --------------------- |
-| WSL eats disk              | Reset / Repack distro |
-| ext4.vhdx too big          | Compact VHDX          |
-| Docker storage huge        | Docker cleanup        |
-| Hard to reclaim disk space | UI automation         |
-| Hard to manage distro      | Desktop tool          |
-| Disk usage unclear         | Storage analyzer      |
+| Problem                    | Solution                  |
+| -------------------------- | ------------------------- |
+| WSL eats disk              | Reset / Repack distro     |
+| ext4.vhdx too big          | Compact VHDX              |
+| Docker storage huge        | Docker cleanup            |
+| Hard to reclaim disk space | UI + CLI + MCP automation |
+| Hard to manage distro      | Desktop tool              |
+| Disk usage unclear         | Storage analyzer          |
+| Manual maintenance         | Automation                |
+| AI cannot manage storage   | MCP integration           |
+
+---
+
+# Final Definition
+
+> PenguinSpace is a developer storage management tool that helps reclaim disk space used by WSL and Docker, and can be controlled via Desktop UI, CLI, or AI agents through MCP.
