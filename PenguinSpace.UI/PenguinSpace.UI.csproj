@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PenguinSpace.Application\PenguinSpace.Application.csproj" />
+    <ProjectReference Include="..\PenguinSpace.Core\PenguinSpace.Core.csproj" />
+    <ProjectReference Include="..\PenguinSpace.WSL\PenguinSpace.WSL.csproj" />
+    <ProjectReference Include="..\PenguinSpace.Docker\PenguinSpace.Docker.csproj" />
+    <ProjectReference Include="..\PenguinSpace.Disk\PenguinSpace.Disk.csproj" />
+    <ProjectReference Include="..\PenguinSpace.Infrastructure\PenguinSpace.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.13" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.13" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.13" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
