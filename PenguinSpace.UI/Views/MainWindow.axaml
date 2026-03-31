@@ -1,0 +1,105 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PenguinSpace.UI.ViewModels"
+        x:Class="PenguinSpace.UI.Views.MainWindow"
+        Title="PenguinSpace"
+        Width="900"
+        Height="600"
+        MinWidth="700"
+        MinHeight="400">
+
+  <DockPanel>
+
+    <!-- Top toolbar -->
+    <StackPanel DockPanel.Dock="Top"
+                Orientation="Horizontal"
+                Spacing="8"
+                Margin="8,8,8,4">
+      <Button Content="🔄 Refresh"
+              Command="{Binding RefreshCommand}"
+              IsEnabled="{Binding !IsLoading}" />
+      <Button Content="⏹ Shutdown WSL"
+              Command="{Binding ShutdownWslCommand}"
+              IsEnabled="{Binding !IsOperationRunning}" />
+      <Button Content="🐳 Docker Cleanup"
+              Command="{Binding DockerCleanupCommand}"
+              IsEnabled="{Binding !IsOperationRunning}" />
+      <TextBlock Text="Đang tải..."
+                 VerticalAlignment="Center"
+                 IsVisible="{Binding IsLoading}"
+                 Margin="8,0,0,0" />
+    </StackPanel>
+
+    <!-- Status bar -->
+    <Border DockPanel.Dock="Bottom"
+            Background="#F0F0F0"
+            Padding="8,4">
+      <TextBlock Text="{Binding StatusMessage}"
+                 TextTrimming="CharacterEllipsis" />
+    </Border>
+
+    <!-- Distro list -->
+    <ScrollViewer>
+      <ItemsControl ItemsSource="{Binding Distros}"
+                    Margin="8,4,8,4">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate DataType="vm:DistroViewModel">
+            <Border BorderBrush="#CCCCCC"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Margin="0,4,0,0"
+                    Padding="8">
+              <Grid ColumnDefinitions="*,Auto">
+
+                <!-- Left: info -->
+                <StackPanel Grid.Column="0" Spacing="2">
+                  <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="{Binding Name}"
+                               FontWeight="Bold"
+                               FontSize="14" />
+                    <TextBlock Text="{Binding State}"
+                               VerticalAlignment="Center"
+                               Foreground="#555555" />
+                    <TextBlock Text="{Binding WslVersion, StringFormat='WSL{0}'}"
+                               VerticalAlignment="Center"
+                               Foreground="#555555" />
+                    <TextBlock Text="{Binding DisplaySize}"
+                               VerticalAlignment="Center"
+                               Foreground="#007ACC"
+                               FontWeight="SemiBold" />
+                  </StackPanel>
+                  <TextBlock Text="{Binding ProgressMessage}"
+                             IsVisible="{Binding IsOperationRunning}"
+                             Foreground="#888888"
+                             FontSize="12" />
+                </StackPanel>
+
+                <!-- Right: action buttons -->
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            Spacing="4"
+                            VerticalAlignment="Center">
+                  <Button Content="Reset"
+                          Command="{Binding ResetCommand}"
+                          IsEnabled="{Binding CanExecuteCommands}" />
+                  <Button Content="Repack"
+                          Command="{Binding RepackCommand}"
+                          IsEnabled="{Binding CanExecuteCommands}" />
+                  <Button Content="Compact VHDX"
+                          Command="{Binding CompactCommand}"
+                          IsEnabled="{Binding CanExecuteCommands}" />
+                  <Button Content="📁 Mở thư mục"
+                          Command="{Binding OpenFolderCommand}"
+                          IsEnabled="{Binding CanExecuteCommands}" />
+                </StackPanel>
+
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+
+  </DockPanel>
+
+</Window>

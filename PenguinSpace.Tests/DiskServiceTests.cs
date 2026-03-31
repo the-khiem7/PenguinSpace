@@ -55,7 +55,7 @@ public class DiskServiceTests
     {
         // This is a path-resolution test — we just verify it doesn't throw
         // and returns null when Docker isn't installed (CI environment)
-        var result = DiskService.FindVhdxPath("docker-desktop-data");
+        var result = DiskService.FindVhdxPathStatic("docker-desktop-data");
         // Result is null if Docker not installed — that's valid
         Assert.True(result is null || File.Exists(result));
     }
@@ -63,7 +63,7 @@ public class DiskServiceTests
     [Fact]
     public void FindVhdxPath_UnknownDistro_ReturnsNull()
     {
-        var result = DiskService.FindVhdxPath("this-distro-does-not-exist-xyz");
+        var result = DiskService.FindVhdxPathStatic("this-distro-does-not-exist-xyz");
         Assert.Null(result);
     }
 

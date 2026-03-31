@@ -1,2 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Avalonia;
+using PenguinSpace.UI;
+
+AppBuilder.Configure<App>()
+    .UsePlatformDetect()
+    .StartWithClassicDesktopLifetime(args);

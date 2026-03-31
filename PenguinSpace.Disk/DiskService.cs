@@ -27,11 +27,13 @@ public class DiskService : IDiskService
         return fi.Length;
     }
 
+    public string? FindVhdxPath(string distroName) => FindVhdxPathStatic(distroName);
+
     /// <summary>
     /// Scans the filesystem to find the VHDX path for a given distro name.
     /// Checks %LOCALAPPDATA%\Packages\ and Docker-specific paths.
     /// </summary>
-    internal static string? FindVhdxPath(string distroName)
+    internal static string? FindVhdxPathStatic(string distroName)
     {
         var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 

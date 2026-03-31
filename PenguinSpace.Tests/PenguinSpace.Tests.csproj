@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.13" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
@@ -28,6 +30,7 @@
     <ProjectReference Include="..\PenguinSpace.WSL\PenguinSpace.WSL.csproj" />
     <ProjectReference Include="..\PenguinSpace.Docker\PenguinSpace.Docker.csproj" />
     <ProjectReference Include="..\PenguinSpace.Disk\PenguinSpace.Disk.csproj" />
+    <ProjectReference Include="..\PenguinSpace.UI\PenguinSpace.UI.csproj" />
   </ItemGroup>
 
 </Project>
